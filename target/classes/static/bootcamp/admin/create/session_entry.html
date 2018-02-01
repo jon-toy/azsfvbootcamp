@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Bootcamp Rankings</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <style>
+    </style>
+    
+    <script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/scripts.js"></script>
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">			
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="navbar-header">
+					 
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button> <a class="navbar-brand" href="/bootcamp/index.html">AZ Bootcamp Rankings</a>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="/bootcamp/index.html">Station Rankings</a>
+						</li>
+						<li>
+							<a href="/bootcamp/placement_matches.html">Placement Matches</a>
+						</li>
+					</ul>
+				</div>
+				
+			</nav>
+			
+			<div id="content" class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									Create Session Entry
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12">
+										<form role="form">
+											<div class="form-group">
+												<label for="player">
+													Player
+												</label>
+												<select class="form-control" id="player" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="session">
+													Session
+												</label>
+												<select class="form-control" id="session" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="start_rank">
+													Starting Rank
+												</label>
+												<input type="number" class="form-control" id="start_rank" />
+											</div>
+											<div class="form-group">
+												<label for="end_rank">
+													Ending Rank
+												</label>
+												<input type="number" class="form-control" id="end_rank" />
+											</div>
+											<div class="form-group">
+												<label for="wins">
+													Wins
+												</label>
+												<input type="number" class="form-control" id="wins" />
+											</div>
+											<div class="form-group">
+												<label for="chara1">
+													Character 1
+												</label>
+												<select class="form-control" id="chara1" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="chara2">
+													Character 2
+												</label>
+												<select class="form-control" id="chara2" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="chara3">
+													Character 3
+												</label>
+												<select class="form-control" id="chara3" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											
+											<button type="button" class="btn btn-default" onclick="onCreate();">
+												Submit
+											</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+
+<script type="text/javascript">
+
+$.get("/players/list", populatePlayers);
+$.get("/sessions/list", populateSessions);
+$.get("/characters/list_characters", populateCharacters);
+
+function populateSessions(data)
+{	
+	var dropdown = document.getElementById("session");
+	dropdown.appendChild(createElement('option', {'value':"NA"}, "Select a Session"));
+	for ( var j = 0; j < data.length; j++ )
+	{
+		var option = createElement('option', {'value':data[j].sessionId}, data[j].name + " @ " + data[j].location);
+		dropdown.appendChild(option);
+	}
+}
+
+function populateCharacters(data)
+{
+	var dropdowns = [];
+	dropdowns.push(document.getElementById("chara1"));
+	dropdowns.push(document.getElementById("chara2"));
+	dropdowns.push(document.getElementById("chara3"));
+	
+	for ( var i = 0; i < dropdowns.length; i++ )
+	{
+		dropdowns[i].appendChild(createElement('option', {'value':"NA"}, "Select a Character"));
+		for ( var j = 0; j < data.length; j++ )
+		{
+			var option = createElement('option', {'value':data[j].code}, data[j].prettyName);
+			dropdowns[i].appendChild(option);
+		}
+	}
+}
+
+function populatePlayers(data)
+{	
+	for ( var j = 0; j < data.length; j++ )
+	{
+		var option = createElement('option', {'value':data[j].playerId}, data[j].gamertag);
+		document.getElementById("player").appendChild(option);
+	}
+}
+
+function onCreate()
+{
+	// Add Player
+	var uri = "/session_entries/add_session_entry?";
+	uri+= "session_id=" + encodeURI(document.getElementById("session").value);
+	uri+= "&player_id=" + encodeURI(document.getElementById("player").value);
+	uri+= "&start_rank=" + (document.getElementById("start_rank").value - 1);
+	uri+= "&end_rank=" + (document.getElementById("end_rank").value - 1);
+	uri+= "&wins=" + (document.getElementById("wins").value);
+	
+	var dropdowns = [];
+	dropdowns.push(document.getElementById("chara1"));
+	dropdowns.push(document.getElementById("chara2"));
+	dropdowns.push(document.getElementById("chara3"));
+	
+	for ( var i = 0; i < dropdowns.length; i++ )
+	{
+		var chara = dropdowns[i].value;
+		if ( chara != null && chara != "NA")
+		{
+			uri += "&" + dropdowns[i].getAttribute('id') + "=" + chara;
+		}
+	}
+	
+	$.get(uri, afterCreate);
+	
+	function afterCreate(data)
+	{		
+		alert(data);
+		document.location = "/bootcamp/admin/create/session_entry.html";
+	}
+}
+
+</script>
+</html>

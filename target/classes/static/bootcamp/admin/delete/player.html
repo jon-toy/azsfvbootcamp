@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Bootcamp Rankings</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <style>
+    </style>
+    
+    <script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/scripts.js"></script>
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">			
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="navbar-header">
+					 
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button> <a class="navbar-brand" href="/bootcamp/index.html">AZ Bootcamp Rankings</a>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="/bootcamp/index.html">Station Rankings</a>
+						</li>
+						<li>
+							<a href="/bootcamp/placement_matches.html">Placement Matches</a>
+						</li>
+					</ul>
+				</div>
+				
+			</nav>
+			
+			<div id="content" class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									Delete Player
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12">
+										<form role="form">
+											<div class="form-group">
+												<label for="player">
+													Player
+												</label>
+												<select class="form-control" id="player" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											
+											<button type="button" class="btn btn-default" onclick="onDelete();">
+												Delete
+											</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+
+<script type="text/javascript">
+
+$.get("/players/list", populatePlayers);
+
+function populatePlayers(data)
+{	
+	for ( var j = 0; j < data.length; j++ )
+	{
+		var option = createElement('option', {'value':data[j].playerId}, data[j].gamertag);
+		document.getElementById("player").appendChild(option);
+	}
+}
+
+function onDelete()
+{
+	var uri = "/players/remove_player?";
+	uri+= "player=" + document.getElementById("player").value;
+	
+	$.get(uri, afterDelete);
+	
+	function afterDelete(data)
+	{
+		alert(data);
+		document.location = "/bootcamp/admin/delete/player.html";
+	}
+}
+
+</script>
+</html>

@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: "jdbc:mysql://127.0.0.1/bootcamp"
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+    generate-ddl: true
+  hibernate:
+    naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy

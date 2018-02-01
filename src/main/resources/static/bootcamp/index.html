@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Bootcamp Rankings</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <style>
+    tr
+    {
+    	cursor: pointer;
+    }
+    #stations
+    {	
+    	max-width: 960px;
+    	margin:auto;
+    }
+    .stats
+    {
+    	margin-bottom: 20px;
+    }
+    .stats-box
+    {
+    	color: #fff;
+  		border-radius: 3px;	
+  		padding: 20px !important;
+    }
+    .stats-h
+    {
+    	font-size: 85%;
+ 		letter-spacing: .15em;
+  		color: #fff;
+  		text-transform: uppercase;
+    }
+    .stats-v
+    {
+    	margin-right: auto;
+    	margin-top: 8;
+  		margin-bottom: 0;
+  		width: 60%;
+  		font-size: 50px;
+    }
+    .stats-v-diff
+    {
+    	margin-right: auto;
+    }
+    .stats-wins
+    {
+    	background-color: #6D9197;   	
+    }
+    .stats-rank
+    {
+    	color: #fff;
+    	background-color: #658B6E;
+    }
+    .stats-diff
+    {
+    	background-color: #28363D;
+    }
+    div.chara-col
+    {
+    	padding-top:0px;
+    	padding-bottom:0px;
+    	padding-right:0px;
+    }
+    img.chara
+    {	
+    	opacity: 0.4;
+    	filter: alpha(opacity=40); /* For IE8 and earlier */
+    }
+    </style>
+    
+    <script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/scripts.js"></script>
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Modal -->
+			<div class="modal fade" id="modal_player_info" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								×
+							</button>
+							<h4 class="modal-title" id="modal_title">
+								Player Info
+							</h4>
+						</div>
+						<div class="modal-body" id="modal_body">
+							<h3 id="modal_gamertag"></h3>
+			
+							<!-- Stats -->
+							<div class="row stats">
+								<!--  Wins -->
+								<div class="col-md-4">
+								    <div class="stats-box stats-wins">
+								        <span class="stats-h">Total Wins</span>
+								        <h2 class="stats-v" id="modal_stats_wins">
+								          12,938
+								        </h2>
+								        <hr class="ans akt">
+								    </div>
+								 </div>
+								 <div class="col-md-4">
+								    <div class="stats-box stats-rank">
+								        <span class="stats-h">Rank</span>
+								        <h2 class="stats-v" id="modal_stats_rank">
+								          12,938
+								        </h2>
+								        <hr class="ans akt">
+								    </div>
+								 </div>
+								 <div class="col-md-4">
+								    <div class="stats-box stats-diff">
+								        <span class="stats-h">Differential</span>
+								        <h2 class="stats-v stats-v-diff" id="modal_stats_diff">
+								          12,938
+								        </h2>
+								        <hr class="ans akt">
+								    </div>
+								 </div>
+							</div>
+							
+							<!--  Characters -->
+							<div class="panel panel-primary">
+								<div class="panel-heading">Characters</div>
+								<div class="panel-body chara-col" id="modal_panel_characters">
+									<!--  Filled in by JS -->
+								</div>
+							</div>
+							
+							<!-- Matches -->
+							<div class="panel panel-primary">
+								<div class="panel-heading">Placement Matches</div>
+								<div class="panel-body" id="modal_panel_matches">
+									Coming Soon!<!--  Filled in by JS -->
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							 
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								Close
+							</button> 
+						</div>
+					</div>					
+				</div>
+			</div>
+			<!-- End Modal -->
+			
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="navbar-header">
+					 
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button> <a class="navbar-brand" href="/bootcamp/index.html">AZ Bootcamp Rankings</a>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active">
+							<a href="/bootcamp/index.html">Station Rankings</a>
+						</li>
+						<li>
+							<a href="/bootcamp/placement_matches.html">Placement Matches</a>
+						</li>
+					</ul>
+					<!-- 
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="#">Link</a>
+						</li>
+						<li class="dropdown">
+							 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#">Action</a>
+								</li>
+								<li>
+									<a href="#">Another action</a>
+								</li>
+								<li>
+									<a href="#">Something else here</a>
+								</li>
+								<li class="divider">
+								</li>
+								<li>
+									<a href="#">Separated link</a>
+								</li>
+							</ul>
+						</li>
+					</ul>-->
+				</div>
+				
+			</nav>
+			
+			<div id="stations" class="container">
+				<!--  To be populated by JS -->
+			</div>
+			
+		</div>
+	</div>
+</div>
+</body>
+
+<script type="text/javascript">
+
+$.get( "/players/list", setupTables);
+
+function setupTables(players)
+{
+	var container = document.getElementById("stations");
+	
+	// Build a table for each of the 10 stations
+	for ( var i = 0; i < 10; i++ )
+	{
+		var players_on_this_station = [];
+		for ( var j = 0; j < players.length; j++ )
+		{
+			if ( players[j].rank == i )
+			players_on_this_station.push(players[j]);
+		}
+		
+		if ( players_on_this_station.length <= 0 ) continue;
+		
+		container.appendChild(buildTable(players_on_this_station, i+1));
+	}
+}
+
+function buildTable(players, station_num)
+{	
+	var row = createElement('div', {'class':'row'});
+	{
+		var col = createElement('div', {'class':'col-md-12'});
+		{
+			var panel = createElement('div', {'class':'panel panel-primary'});
+			{
+				var heading = createElement('div', {'class':'panel-heading'}, "Station " + station_num);
+				panel.appendChild(heading);
+				
+				var table = createElement('table', {'class':'table table-striped table-hover'});
+				{
+					var thead = createElement('thead');
+					{
+						var tr = createElement('tr');
+						{
+							tr.appendChild(createElement('th', {'width':'35%'}, "Player"));
+							tr.appendChild(createElement('th', {'width':'20%'}, "Total Wins"));
+							tr.appendChild(createElement('th', {'width':'45%'}, "Characters"));							
+						}
+						thead.appendChild(tr);
+					}
+					table.appendChild(thead);
+					
+					function populateChars(tr, player)
+					{
+						return function(data)
+						{
+							function generateModal(player, data)
+							{
+								return function()
+								{
+									populateModal(player, data);
+								}
+							}
+							
+							var character_td = createElement('td', {'style':'padding-top:0px;padding-bottom:0px;'});
+							populateCharacters(character_td, data);
+							tr.appendChild(character_td);
+							
+							tr.onclick = generateModal(player, data);
+						}
+					}
+					
+					var tbody = createElement('tbody');
+					{
+						for ( var i = 0; i < players.length; i++ )
+						{
+							var tr = createElement('tr', {'data-toggle':'modal', 'data-id':'1', 'data-target':'#modal_player_info'});
+							{
+								tr.appendChild(createElement('td', {}, players[i].gamertag));
+								tr.appendChild(createElement('td', {}, players[i].wins+""));
+								$.get( "/characters/list_by_player?player_id=" + players[i].playerId, populateChars(tr, players[i]));
+							}
+							tbody.appendChild(tr);
+						}
+					}
+					table.appendChild(tbody);
+				}
+				panel.appendChild(table);
+			}
+			col.appendChild(panel);
+		}
+		row.appendChild(col);
+	}
+	return row;
+}
+
+function populateModal(player, character_data)
+{
+	var gamertag = document.getElementById("modal_gamertag");
+	gamertag.innerHTML = player.gamertag + " ";
+	
+	var name = createElement('small', {}, player.name);
+	gamertag.appendChild(name);
+	
+	function populateCurrent(player, character_data)
+	{
+		return function(data)
+		{
+			document.getElementById("modal_stats_rank").innerHTML = player.rank+1;
+			
+			if ( player.differential > 0 )
+				document.getElementById("modal_stats_diff").innerHTML = "+" + player.differential;
+			else
+				document.getElementById("modal_stats_diff").innerHTML = player.differential;
+		}
+	}
+	
+	function populateMatches(player)
+	{
+		return function(match_data)
+		{
+			var panel = document.getElementById("modal_panel_matches");
+			panel.innerHTML = "";
+			
+			var table = createElement('table', {'class':'table table-striped table-hover'});
+			{
+				var thead = createElement('thead');
+				{
+					var tr = createElement('tr');
+					{
+						tr.appendChild(createElement('th', {'width':'35%'}, "VS Player"));
+						tr.appendChild(createElement('th', {'width':'45%'}, "Character"));
+						tr.appendChild(createElement('th', {'width':'20%'}, "W/L"));							
+					}
+					thead.appendChild(tr);
+				}
+				table.appendChild(thead);
+				
+				var tbody = createElement('tbody');
+				{
+					for ( var i = 0; i < match_data.length; i++ )
+					{
+						var p1 = true;
+						var opponent = match_data[i].player1.gamertag;
+						if ( player.gamertag != opponent ) p1 = false;
+						else opponent = match_data[i].player2.gamertag;
+						
+						var character = null;
+						if ( p1 == true ) character = match_data[i].character2;
+						else character = match_data[i].character1;
+						
+						var tr = createElement('tr');
+						{
+							tr.appendChild(createElement('td', {}, "VS " + opponent));
+							
+							var td_chara = createElement('td');
+							var img_char = createElement('img', {'class':'chara', 'src':"/images/chara/" + character + ".png"});
+							td_chara.appendChild(img_char);
+							tr.appendChild(td_chara);
+							
+							var td_win = createElement('td');
+							{
+								if ( match_data[i].winner.gamertag == player.gamertag )
+								{
+									td_win.appendChild(createElement('span', {'class':'glyphicon glyphicon-star'}));
+								}
+							}
+							tr.appendChild(td_win)
+						}
+						tbody.appendChild(tr);
+					}
+				}
+				table.appendChild(tbody);
+			}
+			panel.appendChild(table);
+		}
+	}
+	
+	// Stats
+	{
+		document.getElementById("modal_stats_wins").innerHTML = player.wins;
+		
+		$.get( "/session_entries/get_latest_entry_for_player?player_id=" + player.playerId, populateCurrent(player, character_data));
+	}
+	
+	// Character
+	{
+		populateCharacters(document.getElementById("modal_panel_characters"), character_data);
+	}
+	
+	// Placement matches
+	{
+		$.get( "/matches/list_by_player?player_id=" + player.playerId, populateMatches(player));
+	}
+}
+
+function populateCharacters(container, character_data)
+{
+	container.innerHTML = "";
+	
+	var row = createElement('div', {'class':'row'});
+	for ( var j = 0; j < character_data.length && j < 3; j++ )
+	{
+		var one_character_div = createElement('div', {'class':'col-md-4 chara-col'});
+		{
+			var img_char = createElement('img', {'class':'chara', 'src':"/images/chara/" + character_data[j].character + ".png"});
+			one_character_div.appendChild(img_char);
+		}
+		row.appendChild(one_character_div);
+	}
+	container.appendChild(row);
+}
+
+</script>
+</html>

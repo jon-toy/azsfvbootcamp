@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Bootcamp Rankings</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <style>
+    </style>
+    
+    <script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/scripts.js"></script>
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">			
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="navbar-header">
+					 
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button> <a class="navbar-brand" href="/bootcamp/index.html">AZ Bootcamp Rankings</a>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="/bootcamp/index.html">Station Rankings</a>
+						</li>
+						<li>
+							<a href="/bootcamp/placement_matches.html">Placement Matches</a>
+						</li>
+					</ul>
+				</div>
+				
+			</nav>
+			
+			<div id="content" class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									Edit Player
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12">
+										<form role="form">
+											<div class="form-group">
+												<label for="player">
+													Player
+												</label>
+												<select class="form-control" id="player" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="name">
+													Name
+												</label>
+												<input type="text" class="form-control" id="name" />
+											</div>
+											<div class="form-group">
+												<label for="gamertag">
+													Gamertag
+												</label>
+												<input type="text" class="form-control" id="gamertag" />
+											</div>
+											<div class="form-group">
+												<label for="rank">
+													Initial Rank
+												</label>
+												<input type="number" class="form-control" id="rank" />
+											</div>
+											<div class="form-group">
+												<label for="chara1">
+													Character 1
+												</label>
+												<select class="form-control" id="chara1" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="chara2">
+													Character 2
+												</label>
+												<select class="form-control" id="chara2" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="chara3">
+													Character 3
+												</label>
+												<select class="form-control" id="chara3" >
+													<!-- Options filled in by JS -->
+												</select>
+											</div>
+											
+											<button type="button" class="btn btn-default" onclick="onCreate();">
+												Submit
+											</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+
+<script type="text/javascript">
+
+$.get("/characters/list_characters", populateCharacters);
+
+$.get("/players/list", populatePlayers);
+
+function populatePlayers(data)
+{	
+	var dropdown = document.getElementById("player");
+	for ( var j = 0; j < data.length; j++ )
+	{
+		var option = createElement('option', {'value':data[j].playerId}, data[j].gamertag);
+		dropdown.appendChild(option);
+	}
+	
+	dropdown.onchange = function()
+	{
+		$.get("/players/" + dropdown.value, populateFields);
+	}
+}
+
+function populateFields(data)
+{
+	document.getElementById("name").value = data.name;
+	document.getElementById("gamertag").value = data.gamertag;
+}
+
+function populateCharacters(data)
+{
+	var dropdowns = [];
+	dropdowns.push(document.getElementById("chara1"));
+	dropdowns.push(document.getElementById("chara2"));
+	dropdowns.push(document.getElementById("chara3"));
+	
+	for ( var i = 0; i < dropdowns.length; i++ )
+	{
+		dropdowns[i].appendChild(createElement('option', {'value':"NA"}, "Select a Character"));
+		for ( var j = 0; j < data.length; j++ )
+		{
+			var option = createElement('option', {'value':data[j].code}, data[j].prettyName);
+			dropdowns[i].appendChild(option);
+		}
+	}
+}
+
+function onCreate()
+{
+	// Edit Player
+	var uri = "/players/edit_player?";
+	uri+= "player=" + encodeURI(document.getElementById("player").value);
+	uri+= "&name=" + encodeURI(document.getElementById("name").value);
+	uri+= "&gamertag=" + encodeURI(document.getElementById("gamertag").value);
+	uri+= "&rank=" + (document.getElementById("rank").value - 1);
+	
+	var dropdowns = [];
+	dropdowns.push(document.getElementById("chara1"));
+	dropdowns.push(document.getElementById("chara2"));
+	dropdowns.push(document.getElementById("chara3"));
+	
+	for ( var i = 0; i < dropdowns.length; i++ )
+	{
+		var chara = dropdowns[i].value;
+		if ( chara != null && chara != "NA")
+		{
+			uri += "&" + dropdowns[i].getAttribute('id') + "=" + chara;
+		}
+	}
+	
+	$.get(uri, afterCreate);
+	
+	function afterCreate(data)
+	{		
+		alert("Player created");
+		document.location = "/bootcamp/index.html";
+	}
+}
+
+</script>
+</html>
